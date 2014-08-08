@@ -44,7 +44,7 @@ function opcache_menu() {
  */
 function opcache_router_access($request_time, $token) {
   $opcache = new OPCache();
-  if (!$opcache->isEnabled()) {
+  if (!$opcache->isEnabled() || REQUEST_TIME - $request_time > 30) {
     return FALSE;
   }
 

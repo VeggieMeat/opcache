@@ -1,0 +1,42 @@
+<?php
+
+/**
+ * @file
+ * Contains installation-related hooks for OPCache.
+ */
+
+/**
+ * Implements hook_requirements().
+ */
+function opcache_requirements($phase) {
+  $requirements = array();
+  
+  if ($phase == 'install' || $phase == 'runtime') {
+    if (!extension_loaded('Zend OPcache')) {
+      $requirements['opcache_not_installed'] = array(
+        'title' => t('Zend OPcache extension not installed.'),
+        'description' => t('Zend OPcache PHP extension is not installed.'),
+        'severity' => REQUIREMENT_ERROR,
+      );
+    }
+    else {
+      $config = opcache_get_configuration();
+      if (!$config['directives']['opcache.enable']) {
+        $requirements['opcached_not_enabled'] = array(
+          'title' => t('Zend OPcache extension not enabled.'),
+          'description' => t('Zend OPcache PHP extension is installed. However, it is not enabled.'),
+          'severity' => REQUIREMENT_WARNING,
+        );
+      }
+      else {
+        $requirements['opcache_enabled'] = array(
+          'title' => t('OPcache is enabled.'),
+          'value' => $config['version']['version'],
+          'serverity' => REQUIREMENT_OK,
+        );
+      }
+    }
+  }
+
+  return $requirements;
+}

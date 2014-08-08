@@ -5,3 +5,63 @@
  * Contains functions for OPcache module.
  */
 
+/**
+ * Implements hook_flush_caches().
+ */
+function opcache_flush_caches() {
+  $opcache = new OPCache();
+  if (!drupal_is_cli()) {
+    $opcache->reset();
+  }
+}
+
+/**
+ * Implements hook_menu().
+ */
+function opcache_menu() {
+  $items = array(
+    'opcache/%/%/reset' => array(
+      'type' => MENU_CALLBACK,
+      'access callback' => 'opcache_router_access',
+      'access arguments' => array(1 ,2),
+      'page callback' => 'opcache_router',
+      'page arguments' => array(3, 4),
+    ),
+    'opcache/%/%/invalidate/%' => array(
+      'type' => MENU_CALLBACK,
+      'access callback' => 'opcache_router_access',
+      'access arguments' => array(1 ,2),
+      'page callback' => 'opcache_router',
+      'page arguments' => array(3, 4),
+    ),
+ );
+
+  return $items;
+}
+
+/**
+ * Access callback for OPCache router.
+ */
+function opcache_router_access($request_time, $token) {
+  $opcache = new OPCache();
+  if (!$opcache->isEnabled()) {
+    return FALSE;
+  }
+
+  return $opcache->verifyToken($request_time, $token);
+}
+
+/**
+ * Page callback for OPCache router.
+ */
+function opcache_router($operation = 'reset', $script = '') {
+  $opcache = new OPCache();
+  if ($operation == 'reset') {
+    $opcache->reset();
+  }
+  elseif ($operation = 'invalidate') {
+    $opcache->invalidate($script);
+  }
+
+  return '';
+}

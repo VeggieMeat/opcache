@@ -2,11 +2,6 @@
 
 class OPCache {
 
-  public function __construct() {
-    $this->configuration = new OPCacheConfiguration();
-    $this->status = new OPCacheStatus();
-  }
-
   private function drushBuildUrl($server, $params) {
     $token = $this->getToken();
 
@@ -72,7 +67,8 @@ class OPCache {
   }
 
   public function isEnabled() {
-    $info = $this->status->getCurrentStatus();
+    $status = new OPCacheStatus();
+    $info = $status->getCurrentStatus();
     if ($info['opcache_enabled']) {
       return TRUE;
     }

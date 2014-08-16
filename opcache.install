@@ -10,7 +10,7 @@
  */
 function opcache_requirements($phase) {
   $requirements = array();
-  
+
   if ($phase == 'install' || $phase == 'runtime') {
     if (!extension_loaded('Zend OPcache')) {
       $requirements['opcache_not_installed'] = array(
@@ -32,7 +32,7 @@ function opcache_requirements($phase) {
         $requirements['opcache_enabled'] = array(
           'title' => t('OPcache is enabled.'),
           'value' => $config['version']['version'],
-          'serverity' => REQUIREMENT_OK,
+          'severity' => REQUIREMENT_OK,
         );
       }
     }

@@ -4,13 +4,16 @@ class OPCache {
 
   private function drushBuildUrl($server, $params) {
     $token = $this->getToken();
-
-    $url = url('http://' . $server . '/opcache/' . REQUEST_TIME . '/' . $token . '/' . $params['op'], array('external' => TRUE));
-
+    // @todo Tokens are only valid for 30 seconds after the time in the second
+    // parameter, and we're resetting them one at a time. If there are many
+    // servers and/or the resets take too long (perhaps because of a timeout),
+    // later servers will have invalid tokens. Easy solution: use time() instead
+    // of REQUEST_TIME. Harder solution: make asyncrhonous cURL requests that
+    // fire all at once.
+    $url = $server . '/opcache/' . REQUEST_TIME . "/{$token}/{$params['op']}";
     if (isset($params['script'])) {
       $url .= '/' . $params['script'];
     }
-
     return $url;
   }
 
@@ -34,7 +37,14 @@ class OPCache {
 
     global $base_url;
     $urldata = @parse_url($base_url);
-    $servers = variable_get('opcache_backends', array('127.0.0.1'));
+    $servers = variable_get('opcache_backends', NULL);
+    if (!$servers) {
+      if (preg_match('/default$/', $base_url)) {
+        drush_log(dt("In order to properly reset the OPcache cache, please use the -l/--uri flag to specify the correct URL of this Drupal installation, or specify paths to the PHP proxy servers in the OPcache module's settings form."), 'error');
+        return;
+      }
+      $servers = array(url('<front>', array('absolute' => TRUE)));
+    }
 
     foreach ($servers as $server) {
       $url = $this->drushBuildUrl($server, $params);

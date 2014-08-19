@@ -31,8 +31,9 @@ class OPCache {
   }
 
   private function drushRequest($params = array()) {
-    if (!in_array('curl', get_loaded_extensions())) {
-      drush_log('cURL is not installed on this server. In order to clear OPCache for Drupal from Drush, you must have cURL installed.', 'warning');
+    if (!extension_loaded('curl')) {
+      drush_log('cURL is not installed on this server. In order to clear OPCache for Drupal from Drush, you must have cURL installed.', 'error');
+      return;
     }
 
     global $base_url;
@@ -49,25 +50,37 @@ class OPCache {
     foreach ($servers as $server) {
       $url = $this->drushBuildUrl($server, $params);
       $cc = curl_init();
-      $headers = array("HOST: " . $urldata['host']);
+      $headers = array("Host: " . $urldata['host']);
       curl_setopt($cc, CURLOPT_FOLLOWLOCATION, true);
       curl_setopt($cc, CURLOPT_HTTPHEADER, $headers);
       curl_setopt($cc, CURLOPT_HEADER, 0);
       curl_setopt($cc, CURLOPT_RETURNTRANSFER, TRUE);
       curl_setopt($cc, CURLOPT_URL, $url);
+      curl_setopt($cc, CURLOPT_TIMEOUT, 10);
+      curl_setopt($cc, CURLOPT_MAXREDIRS, 4);
       $cr = curl_exec($cc);
       $status = curl_getinfo($cc, CURLINFO_HTTP_CODE);
       curl_close($cc);
-      if (drush_get_context('DRUSH_DEBUG') && !drush_get_context('DRUSH_QUIET')) {
-        if ($status == 200 && $params['op'] == 'reset') {
-          drush_log('OPCache was cleared on ' . $server . '.', 'notice');
-        }
-        elseif ($status == 200 && $params['op'] == 'invalidate') {
-          drush_log($params['script'] . ' was invalidated in OPCache on ' . $server . '.', 'notice');
-        }
-        else {
-          drush_log('OPCache request failed. Error code: ' . $status, 'warning');
-        }
+      switch ($status) {
+        case 200:
+          if ($params['op'] === 'reset') {
+            drush_log(dt('OPcache was reset at @server.', array('@server' => $server)), 'success');
+          }
+          elseif ($params['op'] === 'invalidate') {
+            drush_log(dt('@script was invalidated in OPcache at @server.', array('@script' => $params['script'], '@server' => $server)), 'success');
+          }
+          break;
+        case 404:
+          drush_log(dt('OPcache operation at @server failed; the reset path could not be found (404).', array('@server' => $server)), 'error');
+          break;
+        case 403:
+          drush_log(dt('OPcache operation at @server failed; access to the reset path was denied (403). This may happen if too much time elapsed during the request process. Please try again.', array('@server' => $server)), 'error');
+          break;
+        case 0:
+          drush_log(dt('OPcache operation at @server failed; server could not be reached.', array('@server' => $server)), 'error');
+          break;
+        default:
+          drush_log(dt('OPcache operation at @server failed; status code @code.', array('@server' => $server, '@code' => $status)), 'error');          
       }
     }
   }

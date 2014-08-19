@@ -15,6 +15,7 @@ function opcache_requirements($phase) {
     if (!extension_loaded('Zend OPcache')) {
       $requirements['opcache_not_installed'] = array(
         'title' => t('Zend OPcache extension not installed.'),
+        'value' => '',
         'description' => t('Zend OPcache PHP extension is not installed.'),
         'severity' => REQUIREMENT_ERROR,
       );
@@ -24,6 +25,7 @@ function opcache_requirements($phase) {
       if (!$config['directives']['opcache.enable']) {
         $requirements['opcached_not_enabled'] = array(
           'title' => t('Zend OPcache extension not enabled.'),
+          'value' => '',
           'description' => t('Zend OPcache PHP extension is installed. However, it is not enabled.'),
           'severity' => REQUIREMENT_WARNING,
         );

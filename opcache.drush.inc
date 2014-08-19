@@ -10,17 +10,17 @@
 function opcache_drush_command() {
   $commands = array(
     'opcache-configuration' => array(
-      'description' => dt('Get current OPCache configuration.'),
+      'description' => dt('Get current OPcache configuration.'),
     ),
     'opcache-invalidate' => array(
-      'description' => dt('Invalidate scripts in OPCache.'),
+      'description' => dt('Invalidate scripts in OPcache.'),
       'arguments' => array(
-        'scripts' => dt('Required. A space-delimited list of scripts to invalidate in OPCache.'),
+        'scripts' => dt('Required. A space-delimited list of scripts to invalidate in OPcache.'),
       ),
       'required-arguments' => 1,
     ),
     'opcache-status' => array(
-      'description' => dt('Get current OPCache status.'),
+      'description' => dt('Get current OPcache status.'),
     ),
   );
 

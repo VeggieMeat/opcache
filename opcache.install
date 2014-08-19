@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains installation-related hooks for OPCache.
+ * Contains installation-related hooks for OPcache.
  */
 
 /**

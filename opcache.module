@@ -54,7 +54,7 @@ function opcache_menu() {
 }
 
 /**
- * Access callback for OPCache router.
+ * Access callback for OPcache router.
  */
 function opcache_router_access($request_time, $token) {
   $opcache = new OPCache();
@@ -66,7 +66,7 @@ function opcache_router_access($request_time, $token) {
 }
 
 /**
- * Page callback for OPCache router.
+ * Page callback for OPcache router.
  */
 function opcache_router($operation = 'reset', $script = '') {
   $opcache = new OPCache();

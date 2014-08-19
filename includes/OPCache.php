@@ -32,7 +32,7 @@ class OPCache {
 
   private function drushRequest($params = array()) {
     if (!extension_loaded('curl')) {
-      drush_log('cURL is not installed on this server. In order to clear OPCache for Drupal from Drush, you must have cURL installed.', 'error');
+      drush_log('The cURL PHP extension is not installed on this server. In order to clear OPcache for Drupal from Drush, you must have cURL installed.', 'error');
       return;
     }
 

@@ -9,8 +9,8 @@
  * Implements hook_flush_caches().
  */
 function opcache_flush_caches() {
-  $opcache = new OPCache();
   if (!drupal_is_cli()) {
+    $opcache = new OPCache();
     $opcache->reset();
   }
 }

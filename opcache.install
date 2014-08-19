@@ -12,21 +12,23 @@ function opcache_requirements($phase) {
   $requirements = array();
 
   if ($phase == 'install' || $phase == 'runtime') {
+    // In the "Install" phase, t() may not be available
+    $t = get_t();
     if (!extension_loaded('Zend OPcache')) {
       $requirements['opcache_not_installed'] = array(
-        'title' => t('Zend OPcache extension not installed.'),
+        'title' => $t('Zend OPcache extension not installed.'),
         'value' => '',
-        'description' => t('Zend OPcache PHP extension is not installed.'),
+        'description' => $t('Zend OPcache PHP extension is not installed.'),
         'severity' => REQUIREMENT_ERROR,
       );
     }
     else {
       $config = opcache_get_configuration();
       if (!$config['directives']['opcache.enable']) {
-        $requirements['opcached_not_enabled'] = array(
-          'title' => t('Zend OPcache extension not enabled.'),
+        $requirements['opcache_not_enabled'] = array(
+          'title' => $t('Zend OPcache extension not enabled.'),
           'value' => '',
-          'description' => t('Zend OPcache PHP extension is installed. However, it is not enabled.'),
+          'description' => $t('Zend OPcache PHP extension is installed. However, it is not enabled.'),
           'severity' => REQUIREMENT_WARNING,
         );
       }
@@ -34,9 +36,9 @@ function opcache_requirements($phase) {
         $configuration = new OPCacheConfiguration();
         $directives = $configuration->checkDirectives();
         if (empty($directives['messages'])) {
-          $directives['messages'][] = t('All is well.');
+          $directives['messages'][] = $t('All is well.');
         }
-        $advisories = theme('item_list', array('items' => $directives['messages'], 'title' => t('Advisories')));
+        $advisories = theme('item_list', array('items' => $directives['messages'], 'title' => $t('Advisories')));
         $requirements['opcache_enabled'] = array(
           'title' => t('OPcache is enabled.'),
           'value' => $config['version']['version'],

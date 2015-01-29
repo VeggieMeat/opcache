@@ -14,7 +14,7 @@ function opcache_admin_form($form, &$form_state) {
     '#type' => 'textarea',
     '#title' => t('PHP proxy back-ends'),
     '#default_value' => empty($backends) ? '' : implode("\n", $backends),
-    '#description' => t('If you run PHP behind one or more proxy back-ends, enter the full URLs to the PHP servers here, one per line. Include the protocol, and if clean URLs are not enabled, append &ldquo;index.php?q=&rdquo; to the end. For example, &ldquo;http://127.0.0.1:8080/&rdquo; or &ldquo;https://192.168.0.12/drupal/index.php?q=&rdquo;. If you are not running PHP behind a proxy back-end, leave this field blank.'),  
+    '#description' => t('If you run PHP behind one or more proxy back-ends, enter the full URLs to the PHP servers here, one per line. Include the protocol, and if clean URLs are not enabled, append &ldquo;index.php?q=&rdquo; to the end. For example, &ldquo;http://127.0.0.1:8080/&rdquo; or &ldquo;https://192.168.0.12/drupal/index.php?q=&rdquo;. If you are not running PHP behind a proxy back-end, leave this field blank.'),
     '#weight' => 0,
   );
   $form['submit'] = array(
@@ -29,7 +29,8 @@ function opcache_admin_form($form, &$form_state) {
  * Submit handler for our configuration form.
  */
 function opcache_admin_form_submit($form, $form_state) {
-  if (!empty(trim($form_state['values']['opcache_backends']))) {
+  $trimmed = trim($form_state['values']['opcache_backends']);
+  if (!empty($trimmed)) {
     $backends = preg_split("/\r\n|\n|\r/", $form_state['values']['opcache_backends']);
   }
   else {

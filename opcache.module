@@ -23,9 +23,9 @@ function opcache_menu() {
     'opcache/%/%/reset' => array(
       'type' => MENU_CALLBACK,
       'access callback' => 'opcache_router_access',
-      'access arguments' => array(1 ,2),
+      'access arguments' => array(1, 2),
       'page callback' => 'opcache_router',
-      'page arguments' => array(3, 4),
+      'page arguments' => array(3),
     ),
     'opcache/%/%/invalidate/%' => array(
       'type' => MENU_CALLBACK,
@@ -33,6 +33,13 @@ function opcache_menu() {
       'access arguments' => array(1 ,2),
       'page callback' => 'opcache_router',
       'page arguments' => array(3, 4),
+    ),
+    'opcache/%/%/status' => array(
+      'type' => MENU_CALLBACK,
+      'access callback' => 'opcache_router_access',
+      'access arguments' => array(1, 2),
+      'page callback' => 'opcache_router',
+      'page arguments' => array(3),
     ),
     'admin/config/development/performance/opcache' => array(
       'type' => MENU_LOCAL_TASK,
@@ -73,8 +80,11 @@ function opcache_router($operation = 'reset', $script = '') {
   if ($operation == 'reset') {
     $opcache->reset();
   }
-  elseif ($operation = 'invalidate') {
+  elseif ($operation == 'invalidate') {
     $opcache->invalidate($script);
+  }
+  elseif ($operation == 'status') {
+    return $opcache->status();
   }
 
   return '';

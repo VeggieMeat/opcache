@@ -79,3 +79,8 @@ function drush_opcache_cache_clear($type = NULL) {
     drush_opcache_reset();
   }
 }
+
+function drush_opcache_status() {
+  $opcache = new OPCache();
+  return $opcache->drushStatus();
+}

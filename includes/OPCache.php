@@ -33,7 +33,7 @@ class OPCache {
   public function drushStatus() {
     $params = array();
     $params['op'] = 'status';
-    $this->drushRequest($params);
+    return $this->drushRequest($params);
   }
 
   private function drushRequest($params = array()) {
@@ -74,6 +74,9 @@ class OPCache {
           }
           elseif ($params['op'] === 'invalidate') {
             drush_log(dt('@script was invalidated in OPcache at @server.', array('@script' => $params['script'], '@server' => $server)), 'success');
+          }
+          elseif ($params['op'] === 'status') {
+            return $cr;
           }
           break;
         case 404:

@@ -30,6 +30,12 @@ class OPCache {
     $this->drushRequest($params);
   }
 
+  public function drushStatus() {
+    $params = array();
+    $params['op'] = 'status';
+    return $this->drushRequest($params);
+  }
+
   private function drushRequest($params = array()) {
     if (!extension_loaded('curl')) {
       drush_log('The cURL PHP extension is not installed on this server. In order to clear OPcache for Drupal from Drush, you must have cURL installed.', 'error');
@@ -69,6 +75,9 @@ class OPCache {
           elseif ($params['op'] === 'invalidate') {
             drush_log(dt('@script was invalidated in OPcache at @server.', array('@script' => $params['script'], '@server' => $server)), 'success');
           }
+          elseif ($params['op'] === 'status') {
+            return $cr;
+          }
           break;
         case 404:
           drush_log(dt('OPcache operation at @server failed; the reset path could not be found (404).', array('@server' => $server)), 'error');
@@ -80,7 +89,7 @@ class OPCache {
           drush_log(dt('OPcache operation at @server failed; server could not be reached.', array('@server' => $server)), 'error');
           break;
         default:
-          drush_log(dt('OPcache operation at @server failed; status code @code.', array('@server' => $server, '@code' => $status)), 'error');          
+          drush_log(dt('OPcache operation at @server failed; status code @code.', array('@server' => $server, '@code' => $status)), 'error');
       }
     }
   }
@@ -103,6 +112,11 @@ class OPCache {
 
   public function reset() {
     return opcache_reset();
+  }
+
+  public function status() {
+    $status = new OPCacheStatus();
+    return $status->getStatusData();
   }
 
   public function verifyToken($request_time, $token) {

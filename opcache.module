@@ -11,7 +11,7 @@
 function opcache_flush_caches() {
   if (!drupal_is_cli()) {
     $opcache = new OPCache();
-    $opcache->reset();
+    $opcache->cacheClear();
   }
 }
 

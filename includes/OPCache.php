@@ -166,7 +166,7 @@ class OPCache {
         watchdog('opcache', 'OPcache operation at @server failed; server could not be reached.', array('@server' => $server), WATCHDOG_ERROR);
         break;
       default:
-        watchdog('opcache', 'OPcache operation at @server failed; status code @code.', array('@server' => $server, '@code' => $status)), WATCHDOG_ERROR);
+        watchdog('opcache', 'OPcache operation at @server failed; status code @code.', array('@server' => $server, '@code' => $status), WATCHDOG_ERROR);
     }
   }
 
@@ -195,6 +195,7 @@ class OPCache {
       return TRUE;
     }
 
+    Database::closeConnection();
     $this->{$method}($server, $params);
     exit(0);
   }

@@ -4,40 +4,26 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "31f12810544c5351327c79bba4cfc932",
+    "hash": "572a6b0beac88a41f3fd0d2ee5101035",
     "packages": [
         {
-            "name": "crunch/fastcgi",
-            "version": "v1.0.1",
+            "name": "mikehaertl/php-shellcommand",
+            "version": "1.0.4",
             "source": {
                 "type": "git",
-                "url": "https://github.com/KingCrunch/FastCGI.git",
-                "reference": "ed263c6dac094c486e0b9e5a4edc7e6d77312caa"
+                "url": "https://github.com/mikehaertl/php-shellcommand.git",
+                "reference": "8f85b119472c98c539c7ac5f4302643ff20df220"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KingCrunch/FastCGI/zipball/ed263c6dac094c486e0b9e5a4edc7e6d77312caa",
-                "reference": "ed263c6dac094c486e0b9e5a4edc7e6d77312caa",
+                "url": "https://api.github.com/repos/mikehaertl/php-shellcommand/zipball/8f85b119472c98c539c7ac5f4302643ff20df220",
+                "reference": "8f85b119472c98c539c7ac5f4302643ff20df220",
                 "shasum": ""
             },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "require-dev": {
-                "phake/phake": "~2.0@dev",
-                "phpunit/phpunit": "~4.0",
-                "symfony/process": "~2.5"
-            },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev",
-                    "dev-develop": "2.0.x-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
-                    "Crunch\\FastCGI\\": "src"
+                    "mikehaertl\\shellcommand\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -46,18 +32,15 @@
             ],
             "authors": [
                 {
-                    "name": "Sebastian Krebs",
-                    "email": "krebs.seb@gmail.com",
-                    "homepage": "http://www.kingcrunch.de",
-                    "role": "Maintainer"
+                    "name": "Michael Härtl",
+                    "email": "haertl.mike@gmail.com"
                 }
             ],
-            "description": "FastCGI client",
-            "homepage": "http://crunchfastcgi.readthedocs.org/en/latest/",
+            "description": "An object oriented interface to shell commands",
             "keywords": [
-                "fastcgi"
+                "shell"
             ],
-            "time": "2015-01-19 21:37:53"
+            "time": "2014-11-03 09:44:24"
         }
     ],
     "packages-dev": [

@@ -1,0 +1,25 @@
+language: php
+
+php:
+  - 5.3
+  - 5.4
+  - 5.5
+  - 5.6
+  - 7
+  - hhvm
+
+matrix:
+  fast_finish: true
+  allow_failures:
+    - php: 7
+    - php: hhvm
+
+script:
+  - $TRAVIS_BUILD_DIR/vendor/bin/phpunit --coverage-clover $TRAVIS_BUILD_DIR/build/logs/clover.xml --verbose --debug
+
+after_script:
+  - cd $TRAVIS_BUILD_DIR
+  - php $TRAVIS_BUILD_DIR/vendor/bin/coveralls -v
+  - $TRAVIS_BUILD_DIR/vendor/bin/phpmd $TRAVIS_BUILD_DIR/$MODULE_PATH text codesize,naming,design
+  - $TRAVIS_BUILD_DIR/vendor/bin/phpcpd $TRAVIS_BUILD_DIR/$MODULE_PATH
+  - $TRAVIS_BUILD_DIR/vendor/bin/phpcs --standard=$TRAVIS_BUILD_DIR/vendor/drupal/coder/coder_sniffer/Drupal $TRAVIS_BUILD_DIR/$MODULE_PATH

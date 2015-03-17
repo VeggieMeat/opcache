@@ -1,5 +1,9 @@
 <?php
 
+namespace OPCache;
+
+use OPCache\FCGIRequest;
+
 class OPCache {
 
   private $queryString;
@@ -76,17 +80,9 @@ class OPCache {
   private function fcgiRequest($server, $params) {
     global $base_url;
     $fcgi = substr($server, 7);
-    $command = 'SCRIPT_NAME=/index.php
-                SCRIPT_FILENAME=' . DRUPAL_ROOT . '/index.php
-                HTTP_HOST=' . $base_url . '
-                REMOTE_ADDR=127.0.0.1
-                QUERY_STRING=' . $this->queryString . '
-                REQUEST_METHOD=GET
-                SERVER_SOFTWARE=Drupal
-                REQUEST_URI=' . $this->uri . '
-                cgi-fcgi -bind -connect ' . $fcgi;
+    $command = new FCGIRequest($fcgi, $this->uri, $this->queryString);
+    $exit = $command->run();
 
-    exec($command, $response, $exit);
     if ($exit == 127) {
       watchdog('opcache', 'cgi-fcgi not found', array(), WATCHDOG_ERROR);
     }
@@ -195,7 +191,7 @@ class OPCache {
       return TRUE;
     }
 
-    Database::closeConnection();
+    //Database::closeConnection();
     $this->{$method}($server, $params);
     exit(0);
   }

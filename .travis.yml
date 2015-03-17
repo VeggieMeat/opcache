@@ -14,6 +14,13 @@ matrix:
     - php: 7
     - php: hhvm
 
+before_install:
+  - composer self-update
+  - composer install -n --prefer-source
+
+install:
+  - phpenv rehash
+
 script:
   - $TRAVIS_BUILD_DIR/vendor/bin/phpunit --coverage-clover $TRAVIS_BUILD_DIR/build/logs/clover.xml --verbose --debug
 

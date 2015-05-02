@@ -1,6 +1,6 @@
 {
   "require": {
-    "mikehaertl/php-shellcommand": "1.0.*"
+    "crunch/fastcgi": "1.0.*"
   },
   "require-dev": {
     "satooshi/php-coveralls": "dev-master",

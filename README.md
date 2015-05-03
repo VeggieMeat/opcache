@@ -6,8 +6,9 @@ This module allows Drupal to report status information about the cache and reset
 REQUIREMENTS
 ------------
 
-- PHP 5.3
+- PHP 5.4
 - OPcache extension (see [official installation instructions](http://php.net/manual/en/opcache.installation.php)).
+- [Composer Manager](https://www.drupal.org/project/composer_manager)
 
 FEATURES
 --------

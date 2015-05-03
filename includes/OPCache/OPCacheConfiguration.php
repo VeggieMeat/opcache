@@ -1,5 +1,7 @@
 <?php
 
+namespace OPCache;
+
 class OPCacheConfiguration {
 
   private $configurationData;

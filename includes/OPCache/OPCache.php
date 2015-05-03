@@ -3,6 +3,9 @@
 namespace OPCache;
 
 use OPCache\FCGIRequest;
+use OPCache\HTTPRequest;
+use OPCache\OPCacheConfiguration;
+use OPCache\OPCacheStatus;
 
 class OPCache {
 
@@ -78,23 +81,12 @@ class OPCache {
   }
 
   private function fcgiRequest($server, $params) {
-    global $base_url;
     $fcgi = substr($server, 7);
-    $command = new FCGIRequest($fcgi, $this->uri, $this->queryString);
-    $exit = $command->run();
-
-    if ($exit == 127) {
-      watchdog('opcache', 'cgi-fcgi not found', array(), WATCHDOG_ERROR);
-    }
-    elseif ($exit == 2) {
-      $this->logResponse($server, 0, $params);
-    }
-    elseif ($exit === 0) {
-      $status = substr($response[0], 8, 3);
-      $this->logResponse($server, $status, $params);
-    }
-    else {
-      watchdog('opcache', 'An error was encountered running cgi-fcgi.', array(), WATCHDOG_ERROR);
+    try {
+      $command = new FCGIRequest($fcgi, $this->uri, $this->queryString);
+      $command->run();
+    } catch (\Exception $e) {
+      watchdog('opcache', 'An error was encountered clearing OPCache on %server. Message: %error', array('%server' => $server, '%error' => $e->getMessage()), WATCHDOG_ERROR);
     }
   }
 
@@ -103,27 +95,15 @@ class OPCache {
   }
 
   private function httpRequest($server, $params) {
-    if (!extension_loaded('curl')) {
-      watchdog('opcache', 'The cURL PHP extension is not installed on this server. In order to clear OPcache for Drupal from Drush, you must have cURL installed.', array(), WATCHDOG_ERROR);
-      return;
-    }
-
     global $base_url;
     $urldata = @parse_url($base_url);
 
     $url = $this->drushBuildUrl($server, $params);
-    $cc = curl_init();
-    $headers = array("Host: " . $urldata['host']);
-    curl_setopt($cc, CURLOPT_FOLLOWLOCATION, true);
-    curl_setopt($cc, CURLOPT_HTTPHEADER, $headers);
-    curl_setopt($cc, CURLOPT_HEADER, 0);
-    curl_setopt($cc, CURLOPT_RETURNTRANSFER, TRUE);
-    curl_setopt($cc, CURLOPT_URL, $url);
-    curl_setopt($cc, CURLOPT_TIMEOUT, 10);
-    curl_setopt($cc, CURLOPT_MAXREDIRS, 4);
-    $cr = curl_exec($cc);
-    $status = curl_getinfo($cc, CURLINFO_HTTP_CODE);
-    curl_close($cc);
+    $client = new HTTPRequest();
+    $request = $client->createRequest('GET', $url);
+    $request->setHeader('Host', $urldata['host']);
+    $response = $client->send($request);
+    $status = $response->getStatusCode();
     $this->logResponse($server, $status, $params);
   }
 
@@ -175,25 +155,8 @@ class OPCache {
         $method = 'httpRequest';
       }
 
-      if (!$this->parallelRequest($method, $server, $params)) {
-        $this->{$method}($server, $params);
-      }
+      $this->{$method}($server, $params);
     }
-  }
-
-  private function parallelRequest($method, $server, $params) {
-    if (!function_exists('pcntl_fork')) {
-      return FALSE;
-    }
-
-    $pid = pcntl_fork();
-    if ($pid) {
-      return TRUE;
-    }
-
-    //Database::closeConnection();
-    $this->{$method}($server, $params);
-    exit(0);
   }
 
   public function reset() {

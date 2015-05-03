@@ -2,7 +2,6 @@
 
 namespace OPCache;
 
-
 class FCGIRequest {
 
   public function __construct($fcgi, $uri, $queryString) {
@@ -12,7 +11,6 @@ class FCGIRequest {
   }
 
   public function run() {
-    global $base_url;
     $fastcgi = new \Crunch\FastCGI\Client($this->fcgi);
     $connection = $fastcgi->connect();
     $request = $connection->newRequest(
@@ -24,10 +22,10 @@ class FCGIRequest {
         'SCRIPT_FILENAME' => DRUPAL_ROOT . '/index.php',
         'QUERY_STRING' => $this->queryString,
         'REQUEST_URI' => $this->uri,
+        'REMOTE_ADDR' => '127.0.0.1',
       )
     );
 
-    $response = $connection->request($request);
+    $connection->request($request);
   }
-
 }

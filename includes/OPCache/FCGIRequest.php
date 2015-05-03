@@ -2,7 +2,13 @@
 
 namespace OPCache;
 
+use Crunch\FastCGI\Client;
+
 class FCGIRequest {
+
+  protected $fcgi;
+  protected $uri;
+  protected $queryString;
 
   public function __construct($fcgi, $uri, $queryString) {
     $this->fcgi = $fcgi;
@@ -11,7 +17,7 @@ class FCGIRequest {
   }
 
   public function run() {
-    $fastcgi = new \Crunch\FastCGI\Client($this->fcgi);
+    $fastcgi = new Client($this->fcgi);
     $connection = $fastcgi->connect();
     $request = $connection->newRequest(
       array(

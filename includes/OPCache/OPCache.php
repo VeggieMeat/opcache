@@ -36,6 +36,7 @@ class OPCache {
     }
 
     // Multiple backends must be cleared.
+    $params = [];
     $params['op'] = 'reset';
     $this->multiBackendRequest($params);
   }
@@ -119,7 +120,7 @@ class OPCache {
     return opcache_invalidate($script, $force);
   }
 
-  private function logResponse($server, $status, $params, $cr = NULL) {
+  private function logResponse($server, $status, $params) {
     switch ($status) {
       case 200:
         if ($params['op'] === 'reset') {
@@ -128,9 +129,6 @@ class OPCache {
         elseif ($params['op'] === 'invalidate') {
           watchdog('opcache', '@script was invalidated in OPcache at @server.', array('@script' => $params['script'], '@server' => $server), WATCHDOG_INFO);
         }
-        //elseif ($params['op'] === 'status' && isset($cr)) {
-        //  return $cr;
-        //}
         break;
       case 404:
         watchdog('opcache', 'OPcache operation at @server failed; the reset path could not be found (404).', array('@server' => $server), WATCHDOG_ERROR);

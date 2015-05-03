@@ -4,6 +4,10 @@
  * Contains Drush commands and hook implementations for the OPcache module.
  */
 
+use OPCache\OPCache;
+use OPCache\OPCacheConfiguration;
+use OPCache\OPCacheStatus;
+
 /**
  * Implements hook_drush_command().
  */

@@ -5,7 +5,9 @@
  * Contains installation-related hooks for OPcache.
  */
 
-include_once('includes/OPCacheConfiguration.php');
+use OPCache\OPCache;
+use OPCache\OPCacheConfiguration;
+use OPCache\OPCacheStatus;
 
 /**
  * Implements hook_requirements().

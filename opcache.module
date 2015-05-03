@@ -5,6 +5,10 @@
  * Contains functions for OPcache module.
  */
 
+use OPCache\OPCache;
+use OPCache\OPCacheConfiguration;
+use OPCache\OPCacheStatus;
+
 /**
  * Implements hook_flush_caches().
  */

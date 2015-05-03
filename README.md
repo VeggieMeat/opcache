@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/VeggieMeat/opcache.svg?branch=7.x-1.x)](https://travis-ci.org/VeggieMeat/opcache)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/VeggieMeat/opcache/badges/quality-score.png?b=7.x-1.x)](https://scrutinizer-ci.com/g/VeggieMeat/opcache/?branch=7.x-1.x)
-[![Coverage Status](https://coveralls.io/repos/VeggieMeat/opcache/badge.svg?branch=multi-backend-and-refactoring)](https://coveralls.io/r/VeggieMeat/opcache?branch=multi-backend-and-refactoring)
+[![Coverage Status](https://coveralls.io/repos/VeggieMeat/opcache/badge.svg?branch=7.x-1.x)](https://coveralls.io/r/VeggieMeat/opcache?branch=7.x-1.x)
 
 OPcache
 =======

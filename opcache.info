@@ -1,9 +1,8 @@
 name = OPcache
 description = Allows Drupal to administer PHP OPcache.
 core = 7.x
+php = 5.4
 
-files[] = includes/OPCache.php
-files[] = includes/OPCacheStatus.php
-files[] = includes/OPCacheConfiguration.php
+dependencies[] = composer_manager
 
 configure = admin/config/development/performance/opcache

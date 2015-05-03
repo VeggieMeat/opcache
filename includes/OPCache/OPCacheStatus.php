@@ -1,5 +1,7 @@
 <?php
 
+namespace OPCache;
+
 class OPCacheStatus {
 
   private $statusData;

@@ -5,10 +5,6 @@
  * Contains installation-related hooks for OPcache.
  */
 
-use OPCache\OPCache;
-use OPCache\OPCacheConfiguration;
-use OPCache\OPCacheStatus;
-
 /**
  * Implements hook_requirements().
  */
@@ -36,22 +32,15 @@ function opcache_requirements($phase) {
           'severity' => REQUIREMENT_ERROR,
         );
       }
+      else {
+        $requirements['opcache_is_enabled'] = array(
+          'title' => $t('OPCache'),
+          'value' => $config['version']['version'],
+          'severity' => REQUIREMENT_OK,
+          'description' => $t('Zend OPcache extension is installed and enabled.'),
+        );
+      }
     }
-  }
-
-  if ($phase =='runtime')  {
-    $configuration = new OPCacheConfiguration();
-    $directives = $configuration->checkDirectives();
-    if (empty($directives['messages'])) {
-      $directives['messages'][] = $t('All is well.');
-    }
-    $advisories = theme('item_list', array('items' => $directives['messages'], 'title' => $t('Advisories')));
-    $requirements['opcache_enabled'] = array(
-      'title' => $t('OPcache is enabled.'),
-      'value' => $config['version']['version'],
-      'description' => $advisories,
-      'severity' => $directives['severity'],
-    );
   }
 
   return $requirements;

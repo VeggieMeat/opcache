@@ -68,7 +68,7 @@ class OPCache {
 
   private function drushRequest($params = array()) {
     global $base_url;
-    if (preg_match('/default$/', $base_url)) {
+    if (preg_match('/default$/', $base_url) && !$this->servers) {
       drush_log(dt("In order to properly reset the OPcache cache, please use the -l/--uri flag to specify the correct URL of this Drupal installation, or specify paths to the PHP proxy servers in the OPcache module's settings form."), 'error');
       return;
     }

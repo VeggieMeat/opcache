@@ -69,6 +69,7 @@ function opcache_menu() {
  * Access callback for OPcache router.
  */
 function opcache_router_access($request_time, $token) {
+  composer_manager_register_autoloader();
   $opcache = new OPCache();
   if (!$opcache->isEnabled() || REQUEST_TIME - $request_time > 30) {
     return FALSE;
@@ -81,6 +82,7 @@ function opcache_router_access($request_time, $token) {
  * Page callback for OPcache router.
  */
 function opcache_router($operation = 'reset', $script = '') {
+  composer_manager_register_autoloader();
   $opcache = new OPCache();
   if ($operation == 'reset') {
     $opcache->reset();

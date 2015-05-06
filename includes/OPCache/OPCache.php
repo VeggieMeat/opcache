@@ -73,7 +73,7 @@ class OPCache {
       return;
     }
     if (!$this->servers) {
-      $server = array(url('<front>', array('absolute' => TRUE)));
+      $server = url('<front>', array('absolute' => TRUE));
       $this->httpRequest($server, $params);
     }
     else {

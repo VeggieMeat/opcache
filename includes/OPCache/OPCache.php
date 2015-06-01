@@ -100,12 +100,16 @@ class OPCache {
     $urldata = @parse_url($base_url);
 
     $url = $this->drushBuildUrl($server, $params);
-    $client = new HTTPRequest();
-    $request = $client->createRequest('GET', $url);
-    $request->setHeader('Host', $urldata['host']);
-    $response = $client->send($request);
-    $status = $response->getStatusCode();
-    $this->logResponse($server, $status, $params);
+    try {
+      $client = new HTTPRequest();
+      $request = $client->createRequest('GET', $url);
+      $request->setHeader('Host', $urldata['host']);
+      $response = $client->send($request);
+      $status = $response->getStatusCode();
+      $this->logResponse($server, $status, $params);
+    } catch (\Exception $e) {
+      watchdog('opcache', 'An error was encountered clearing OPCache on %server. Message: %error', array('%server' => $server, '%error' => $e->getMessage()), WATCHDOG_ERROR);
+    }
   }
 
   public function isEnabled() {

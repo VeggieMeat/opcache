@@ -1,4 +1,5 @@
 {
+  "name": "drupal/opcache",
   "require": {
     "crunch/fastcgi": "1.0.*",
     "guzzlehttp/guzzle": "5.0.*"

@@ -55,9 +55,33 @@ function opcache_menu() {
       'file' => 'opcache.admin.inc',
       'weight' => 10,
     ),
-    'admin/config/development/performance/performance' => array(
+    'admin/config/development/performance/opcache/backends' => array(
+      'title' => 'Backends',
       'type' => MENU_DEFAULT_LOCAL_TASK,
-      'title' => 'Performance',
+      'weight' => -10,
+    ),
+    'admin/config/development/performance/opcache/status' => array(
+      'title' => 'Status',
+      'type' => MENU_LOCAL_TASK,
+      'page callback' => 'opcache_admin_status',
+      'access arguments' => array('administer site configuration'),
+      'file' => 'opcache.admin.inc',
+      'weight' => 0,
+    ),
+    'admin/config/development/performance/opcache/configuration' => array(
+      'title' => 'Configuration',
+      'type' => MENU_LOCAL_TASK,
+      'page callback' => 'opcache_admin_config',
+      'access arguments' => array('administer site configuration'),
+      'file' => 'opcache.admin.inc',
+      'weight' => 1,
+    ),
+    'admin/config/development/performance/opcache/scripts' => array(
+      'title' => 'Scripts',
+      'type' => MENU_LOCAL_TASK,
+      'page callback' => 'opcache_admin_scripts',
+      'access arguments' => array('administer site configuration'),
+      'file' => 'opcache.admin.inc',
       'weight' => 0,
     ),
  );

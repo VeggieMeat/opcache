@@ -41,6 +41,11 @@ class OPCache {
     $this->multiBackendRequest($params);
   }
 
+  public function config() {
+    $config = new OPCacheConfiguration();
+    return $config->getDirectives();
+  }
+
   private function drushBuildUrl($server, $params) {
     $this->buildQueryString($params);
     $url = "{$server}?{$this->queryString}";

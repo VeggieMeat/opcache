@@ -3,6 +3,7 @@
  * @file
  * Administration-related forms and such.
  */
+use OPCache\OPCache;
 
 /**
  * Form callback for OPcache's administration form.
@@ -38,4 +39,35 @@ function opcache_admin_form_submit($form, $form_state) {
   }
   variable_set('opcache_backends', $backends);
   drupal_set_message(t('The configuration options have been saved.'));
+}
+
+/**
+ * Page callback for OPCache status.
+ */
+function opcache_admin_status() {
+  $opcache = new OPCache();
+  $status = $opcache->status();
+  $render = array(
+    'opcache-status' => array(
+      '#theme' => 'table',
+      '#rows' => $status,
+    ),
+  );
+  return drupal_render($render);
+}
+
+/**
+ * Page callback for OPCache configuration.
+ */
+
+function opcache_admin_config() {
+  $opcache = new OPCache();
+  $config = $opcache->config();
+  $render = array(
+    'opcache-config' => array(
+      '#theme' => 'table',
+      '#rows' => $config,
+    ),
+  );
+  return drupal_render($render);
 }

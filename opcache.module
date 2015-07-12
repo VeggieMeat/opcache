@@ -2,98 +2,32 @@
 
 /**
  * @file
- * Contains functions for OPcache module.
+ * Contains opcache.module.
  */
 
-use OPCache\OPCache;
-use OPCache\OPCacheConfiguration;
-use OPCache\OPCacheStatus;
+use Drupal\Core\Routing\RouteMatchInterface;
 
 /**
- * Implements hook_flush_caches().
+ * Implements hook_help().
  */
-function opcache_flush_caches() {
-  if (!drupal_is_cli()) {
-    composer_manager_register_autoloader();
-    $opcache = new OPCache();
-    $opcache->cacheClear();
+function opcache_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the opcache module.
+    case 'help.page.opcache':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Allows Drupal to administer PHP OPcache.') . '</p>';
+      return $output;
+
+    default:
   }
 }
 
 /**
- * Implements hook_menu().
+ * Implements hook_theme().
  */
-function opcache_menu() {
-  $items = array(
-    'opcache/%/%/reset' => array(
-      'type' => MENU_CALLBACK,
-      'access callback' => 'opcache_router_access',
-      'access arguments' => array(1, 2),
-      'page callback' => 'opcache_router',
-      'page arguments' => array(3),
-    ),
-    'opcache/%/%/invalidate/%' => array(
-      'type' => MENU_CALLBACK,
-      'access callback' => 'opcache_router_access',
-      'access arguments' => array(1 ,2),
-      'page callback' => 'opcache_router',
-      'page arguments' => array(3, 4),
-    ),
-    'opcache/%/%/status' => array(
-      'type' => MENU_CALLBACK,
-      'access callback' => 'opcache_router_access',
-      'access arguments' => array(1, 2),
-      'page callback' => 'opcache_router',
-      'page arguments' => array(3),
-    ),
-    'admin/config/development/performance/opcache' => array(
-      'type' => MENU_LOCAL_TASK,
-      'title' => 'OPcache',
-      'page callback' => 'drupal_get_form',
-      'page arguments' => array('opcache_admin_form'),
-      'access arguments' => array('administer site configuration'),
-      'file' => 'opcache.admin.inc',
-      'weight' => 10,
-    ),
-    'admin/config/development/performance/performance' => array(
-      'type' => MENU_DEFAULT_LOCAL_TASK,
-      'title' => 'Performance',
-      'weight' => 0,
-    ),
- );
+function opcache_theme() {
+  $theme = [];
 
-  return $items;
-}
-
-/**
- * Access callback for OPcache router.
- */
-function opcache_router_access($request_time, $token) {
-  composer_manager_register_autoloader();
-  $opcache = new OPCache();
-  if (!$opcache->isEnabled() || REQUEST_TIME - $request_time > 30) {
-    return FALSE;
-  }
-
-  return $opcache->verifyToken($request_time, $token);
-}
-
-/**
- * Page callback for OPcache router.
- */
-function opcache_router($operation = 'reset', $script = '') {
-  composer_manager_register_autoloader();
-  $opcache = new OPCache();
-  if ($operation == 'reset') {
-    $opcache->reset();
-  }
-  elseif ($operation == 'invalidate') {
-    $opcache->invalidate($script);
-  }
-  elseif ($operation == 'status') {
-    print json_encode($opcache->status());
-    exit();
-  }
-
-  return '';
+  return $theme;
 }

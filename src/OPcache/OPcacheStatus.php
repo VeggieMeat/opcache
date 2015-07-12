@@ -1,8 +1,8 @@
 <?php
 
-namespace OPCache;
+namespace OPcache;
 
-class OPCacheStatus {
+class OPcacheStatus {
 
   private $statusData;
   private $scripts = array();

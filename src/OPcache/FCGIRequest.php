@@ -1,6 +1,6 @@
 <?php
 
-namespace OPCache;
+namespace OPcache;
 
 use Crunch\FastCGI\Client;
 

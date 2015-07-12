@@ -1,17 +1,17 @@
 {
+  "name": "drupal/opcache",
+  "type": "drupal-module",
+  "description": "Allows Drupal to administer PHP OPcache.",
+  "keywords": ["Drupal", "OPcache"],
+  "license": "GPL-2.0+",
+  "homepage": "http://drupal.org/project/opcache",
+  "minimum-stability": "dev",
+  "support": {
+    "issues": "http://drupal.org/project/issues/opcache",
+    "source": "http://cgit.drupalcode.org/opcache"
+  },
   "require": {
     "crunch/fastcgi": "1.0.*",
     "guzzlehttp/guzzle": "5.0.*"
-  },
-  "require-dev": {
-    "satooshi/php-coveralls": "dev-master",
-    "phpmd/phpmd": "*",
-    "phpunit/phpunit": "4.3.*",
-    "sebastian/phpcpd": "*",
-    "squizlabs/php_codesniffer": ">=1.4.1",
-    "drupal/coder": ">7"
-  },
-  "autoload": {
-    "classmap": ["includes/"]
   }
 }

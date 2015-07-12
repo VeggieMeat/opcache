@@ -1,10 +1,10 @@
 <?php
 
-namespace OPCache;
+namespace OPcache;
 
 class HTTPRequest extends \GuzzleHttp\Client {
   public static function getDefaultUserAgent() {
-    return 'OPCache/' . self::getDrupalModuleVersion() . ' ' . parent::getDefaultUserAgent();
+    return 'OPcache/' . self::getDrupalModuleVersion() . ' ' . parent::getDefaultUserAgent();
   }
 
   private static function getDrupalModuleVersion() {

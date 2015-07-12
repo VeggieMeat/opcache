@@ -1,8 +1,8 @@
 <?php
 
-namespace OPCache;
+namespace OPcache;
 
-class OPCacheConfiguration {
+class OPcacheConfiguration {
 
   private $configurationData;
 

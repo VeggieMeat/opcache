@@ -1,13 +1,13 @@
 <?php
 
-namespace OPCache;
+namespace OPcache;
 
-use OPCache\FCGIRequest;
-use OPCache\HTTPRequest;
-use OPCache\OPCacheConfiguration;
-use OPCache\OPCacheStatus;
+use OPcache\FCGIRequest;
+use OPcache\HTTPRequest;
+use OPcache\OPcacheConfiguration;
+use OPcache\OPcacheStatus;
 
-class OPCache {
+class OPcache {
 
   private $queryString;
   private $servers;
@@ -39,6 +39,11 @@ class OPCache {
     $params = [];
     $params['op'] = 'reset';
     $this->multiBackendRequest($params);
+  }
+
+  public function config() {
+    $config = new OPcacheConfiguration();
+    return $config->getDirectives();
   }
 
   private function drushBuildUrl($server, $params) {
@@ -87,7 +92,7 @@ class OPCache {
       $command = new FCGIRequest($fcgi, $this->uri, $this->queryString);
       $command->run();
     } catch (\Exception $e) {
-      watchdog('opcache', 'An error was encountered clearing OPCache on %server. Message: %error', array('%server' => $server, '%error' => $e->getMessage()), WATCHDOG_ERROR);
+      watchdog('opcache', 'An error was encountered clearing OPcache on %server. Message: %error', array('%server' => $server, '%error' => $e->getMessage()), WATCHDOG_ERROR);
     }
   }
 
@@ -108,12 +113,12 @@ class OPCache {
       $status = $response->getStatusCode();
       $this->logResponse($server, $status, $params);
     } catch (\Exception $e) {
-      watchdog('opcache', 'An error was encountered clearing OPCache on %server. Message: %error', array('%server' => $server, '%error' => $e->getMessage()), WATCHDOG_ERROR);
+      watchdog('opcache', 'An error was encountered clearing OPcache on %server. Message: %error', array('%server' => $server, '%error' => $e->getMessage()), WATCHDOG_ERROR);
     }
   }
 
   public function isEnabled() {
-    $status = new OPCacheStatus();
+    $status = new OPcacheStatus();
     $info = $status->getCurrentStatus();
     if ($info['opcache_enabled']) {
       return TRUE;
@@ -166,7 +171,7 @@ class OPCache {
   }
 
   public function status() {
-    $status = new OPCacheStatus();
+    $status = new OPcacheStatus();
     return $status->getStatusData();
   }
 

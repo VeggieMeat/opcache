@@ -1,0 +1,6 @@
+name: OPcache
+type: module
+description: Allows Drupal to administer PHP OPcache.
+core: 8.x
+package: Other
+

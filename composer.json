@@ -11,6 +11,6 @@
     "source": "http://cgit.drupalcode.org/opcache"
   },
   "require": {
-    "crunch/fastcgi": "1.0.*",
+    "crunch/fastcgi": "1.0.*"
   }
 }

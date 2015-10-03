@@ -15,8 +15,10 @@ use OPCache\OPCacheStatus;
 function opcache_flush_caches() {
   if (!drupal_is_cli()) {
     composer_manager_register_autoloader();
-    $opcache = new OPCache();
-    $opcache->cacheClear();
+    if (class_exists('\OPCache\OPCache')) {
+      $opcache = new OPCache();
+      $opcache->cacheClear();
+    }
   }
 }
 

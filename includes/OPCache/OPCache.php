@@ -140,9 +140,18 @@ class OPCache {
     return opcache_invalidate($script, $force);
   }
 
-  public function invalidateMultiple($scripts, $force = FALSE) {
-    foreach ($scripts as $script) {
-      $this->invalidate($script, $force);
+  public function invalidateMultiple(array $scripts, $force = FALSE) {
+    $invalidation_counter = 0;
+    if (!empty($scripts)) {
+      foreach ($scripts as $script) {
+        $this->invalidate($script, $force);
+        $invalidation_counter++;
+      }
+
+      watchdog('opcache', '@scripts scripts were invalidated in OPCache.', array('@scripts' => $invalidation_counter), WATCHDOG_INFO);
+    }
+    else {
+      watchdog('opcache', 'No scripts were available for invalidation in OPCache.', array(), WATCHDOG_INFO);
     }
   }
 

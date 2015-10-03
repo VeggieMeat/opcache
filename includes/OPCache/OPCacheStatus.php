@@ -9,7 +9,7 @@ class OPCacheStatus {
 
   public function __construct($get_scripts = FALSE) {
     $this->statusData = opcache_get_status($get_scripts);
-    if ($get_scripts) {
+    if ($get_scripts && isset($this->statusData['scripts'])) {
       $this->scripts = $this->statusData['scripts'];
     }
   }

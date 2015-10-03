@@ -101,8 +101,8 @@ class OPCache {
     $status = new OPCacheStatus(TRUE);
     $scripts = $status->getScripts();
     foreach ($scripts as $script) {
-      if (strpos($script, DRUPAL_ROOT) !== FALSE) {
-        $this->scripts[] = $script;
+      if (strpos($script['full_path'], DRUPAL_ROOT) !== FALSE) {
+        $this->scripts[] = $script['full_path'];
       }
     }
   }

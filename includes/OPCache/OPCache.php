@@ -10,6 +10,7 @@ use OPCache\OPCacheStatus;
 class OPCache {
 
   private $queryString;
+  private $scripts;
   private $servers;
   private $uri;
 
@@ -96,6 +97,16 @@ class OPCache {
     }
   }
 
+  private function getScripts() {
+    $status = new OPCacheStatus(TRUE);
+    $scripts = $status->getScripts();
+    foreach ($scripts as $script) {
+      if (strpos($script, DRUPAL_ROOT) !== FALSE) {
+        $this->scripts[] = $script;
+      }
+    }
+  }
+
   public function getToken($request_time = REQUEST_TIME) {
     return drupal_hmac_base64('opcache:' . $request_time, drupal_get_private_key() . drupal_get_hash_salt());
   }
@@ -127,6 +138,12 @@ class OPCache {
 
   public function invalidate($script, $force = FALSE) {
     return opcache_invalidate($script, $force);
+  }
+
+  public function invalidateMultiple($scripts, $force = FALSE) {
+    foreach ($scripts as $script) {
+      $this->invalidate($script, $force);
+    }
   }
 
   private function logResponse($server, $status, $params) {
@@ -166,8 +183,13 @@ class OPCache {
     }
   }
 
-  public function reset() {
-    return opcache_reset();
+  public function reset($all = FALSE) {
+    if ($all) {
+      return opcache_reset();
+    }
+
+    $this->getScripts();
+    $this->invalidateMultiple($this->scripts, TRUE);
   }
 
   public function status() {

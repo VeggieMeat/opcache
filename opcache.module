@@ -27,12 +27,12 @@ function opcache_flush_caches() {
  */
 function opcache_menu() {
   $items = array(
-    'opcache/%/%/reset' => array(
+    'opcache/%/%/reset/%' => array(
       'type' => MENU_CALLBACK,
       'access callback' => 'opcache_router_access',
       'access arguments' => array(1, 2),
       'page callback' => 'opcache_router',
-      'page arguments' => array(3),
+      'page arguments' => array(3, 4),
     ),
     'opcache/%/%/invalidate/%' => array(
       'type' => MENU_CALLBACK,
@@ -107,14 +107,14 @@ function opcache_router_access($request_time, $token) {
 /**
  * Page callback for OPcache router.
  */
-function opcache_router($operation = 'reset', $script = '') {
+function opcache_router($operation = 'reset', $arg = FALSE) {
   composer_manager_register_autoloader();
   $opcache = new OPCache();
   if ($operation == 'reset') {
-    $opcache->reset();
+    $opcache->reset($arg);
   }
   elseif ($operation == 'invalidate') {
-    $opcache->invalidate($script);
+    $opcache->invalidate($arg);
   }
   elseif ($operation == 'status') {
     print json_encode($opcache->status());

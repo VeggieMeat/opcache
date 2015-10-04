@@ -29,6 +29,9 @@ class OPCache {
     if (isset($params['script'])) {
       $this->uri .= '/' . $params['script'];
     }
+    if ($params['op'] == 'reset' && $params['all']) {
+      $this->uri .= '/all';
+    }
   }
 
   public function cacheClear() {
@@ -60,9 +63,10 @@ class OPCache {
     $this->drushRequest($params);
   }
 
-  public function drushReset() {
+  public function drushReset($all) {
     $params = array();
     $params['op'] = 'reset';
+    $params['all'] = $all;
     $this->drushRequest($params);
   }
 

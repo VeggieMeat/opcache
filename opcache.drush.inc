@@ -23,6 +23,12 @@ function opcache_drush_command() {
       ),
       'required-arguments' => 1,
     ),
+    'opcache-reset' => array(
+      'description' => dt('Reset OPcache.'),
+      'options' => array(
+        'all' => dt('Clear entire OPcache on server(s).'),
+      ),
+    ),
     'opcache-status' => array(
       'description' => dt('Get current OPcache status.'),
     ),
@@ -64,8 +70,9 @@ function drush_opcache_invalidate() {
  * @see opcache_drush_cache_clear()
  */
 function drush_opcache_reset() {
+  $all = drush_get_option('all');
   $opcache = new OPCache();
-  $opcache->drushReset();
+  $opcache->drushReset($all);
 }
 
 /**
